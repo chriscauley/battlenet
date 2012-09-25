@@ -171,10 +171,10 @@ class Character(LazyThing):
             self.last_modified = None
 
         if 'hunterPets' in data:
-            self.hunterPets = [HunterPet(hunterPet) for hunterPet in self._data['hunterPets']['collected']]
+            self.hunterPets = [HunterPet(hunterPet).id for hunterPet in self._data['hunterPets']['collected']]
 
         if 'pets' in data:
-            self.pets = [Pet(pet) for pet in self._data['pets']['collected']]
+            self.pets = [Pet(pet).id for pet in self._data['pets']['collected']]
 
     @property
     def realm(self):
@@ -633,9 +633,9 @@ class HunterPet(Thing):
     def __init__(self, data):
         self._data = data
 
-        self.name = data['name']
-        self.creature = data['creature']
-        self.slot = data['slot']
+        self.name = data['creatureName']
+        self.creature = data['spellId']
+        self.id = data['spellId']
 
     def __str__(self):
         return self.name
@@ -647,9 +647,9 @@ class Pet(Thing):
     def __init__(self, data):
         self._data = data
 
-        self.name = data['name']
-        self.creature = data['creature']
-        self.slot = data['slot']
+        self.name = data['creatureName']
+        self.creature = data['spellId']
+        self.id = data['spellId']
 
     def __str__(self):
         return self.name
