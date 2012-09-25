@@ -171,7 +171,7 @@ class Character(LazyThing):
             self.last_modified = None
 
         if 'pets' in data:
-            self.pets = [Pet(pet) for pet in self._data['pets']]
+            self.pets = [Pet(pet) for pet in self._data['pets']['collected']]
 
     @property
     def realm(self):
