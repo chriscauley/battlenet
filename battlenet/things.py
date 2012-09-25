@@ -219,7 +219,7 @@ class Character(LazyThing):
     @property
     def mounts(self):
         if self._refresh_if_not_present(Character.MOUNTS):
-            self._mounts = [m['creatureId'] for m in list(self._data[Character.MOUNTS]['collected'])]
+            self._mounts = [m['spellId'] for m in list(self._data[Character.MOUNTS]['collected'])]
 
         return self._mounts
 
