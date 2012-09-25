@@ -114,15 +114,15 @@ class Character(LazyThing):
     TITLES = 'titles'
     PROFESSIONS = 'professions'
     APPEARANCE = 'appearance'
-    COMPANIONS = 'companions'
     MOUNTS = 'mounts'
     GUILD = 'guild'
     QUESTS = 'quests'
+    HUNTERPETS = 'hunterPets'
     PETS = 'pets'
     PROGRESSION = 'progression'
     ACHIEVEMENTS = 'achievements'
     ALL_FIELDS = [STATS, TALENTS, ITEMS, REPUTATIONS, TITLES, PROFESSIONS,
-                  APPEARANCE, COMPANIONS, MOUNTS, GUILD, QUESTS, PETS,
+                  APPEARANCE, MOUNTS, GUILD, QUESTS, HUNTERPETS, PETS,
                   PROGRESSION, ACHIEVEMENTS]
 
     def __init__(self, region, realm=None, name=None, data=None, fields=None, connection=None):
@@ -170,6 +170,9 @@ class Character(LazyThing):
         else:
             self.last_modified = None
 
+        if 'hunterPets' in data:
+            self.hunterPets = [HunterPet(hunterPet) for hunterPet in self._data['hunterPets']['collected']]
+
         if 'pets' in data:
             self.pets = [Pet(pet) for pet in self._data['pets']['collected']]
 
@@ -216,16 +219,9 @@ class Character(LazyThing):
     @property
     def mounts(self):
         if self._refresh_if_not_present(Character.MOUNTS):
-            self._mounts = list(self._data[Character.MOUNTS])
+            self._mounts = [m['creatureId'] for m in list(self._data[Character.MOUNTS]['collected'])]
 
         return self._mounts
-
-    @property
-    def companions(self):
-        if self._refresh_if_not_present(Character.COMPANIONS):
-            self._companions = list(self._data[Character.COMPANIONS])
-
-        return self._companions
 
     @property
     def reputations(self):
@@ -632,6 +628,20 @@ class Profession(Thing):
     def __repr__(self):
         return '<%s: %s>' % (self.__class__.__name__, self.name)
 
+
+class HunterPet(Thing):
+    def __init__(self, data):
+        self._data = data
+
+        self.name = data['name']
+        self.creature = data['creature']
+        self.slot = data['slot']
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return '<%s: %s>' % (self.__class__.__name__, self.name)
 
 class Pet(Thing):
     def __init__(self, data):
