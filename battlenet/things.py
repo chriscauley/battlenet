@@ -171,7 +171,7 @@ class Character(LazyThing):
             self.last_modified = None
 
         if 'hunterPets' in data:
-            self.hunterPets = [HunterPet(hunterPet).id for hunterPet in self._data['hunterPets']['collected']]
+            self.hunterPets = [HunterPet(hunterPet).id for hunterPet in self._data['hunterPets']]
 
         if 'pets' in data:
             self.pets = [Pet(pet).id for pet in self._data['pets']['collected']]
@@ -633,9 +633,9 @@ class HunterPet(Thing):
     def __init__(self, data):
         self._data = data
 
-        self.name = data['creatureName']
-        self.creature = data['spellId']
-        self.id = data['spellId']
+        self.name = data['creature']
+        self.creature = data['name']
+        self.id = data['creature']
 
     def __str__(self):
         return self.name
