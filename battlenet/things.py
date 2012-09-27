@@ -119,10 +119,11 @@ class Character(LazyThing):
     QUESTS = 'quests'
     HUNTERPETS = 'hunterPets'
     PETS = 'pets'
+    PETSLOTS = 'petSlots'
     PROGRESSION = 'progression'
     ACHIEVEMENTS = 'achievements'
     ALL_FIELDS = [STATS, TALENTS, ITEMS, REPUTATIONS, TITLES, PROFESSIONS,
-                  APPEARANCE, MOUNTS, GUILD, QUESTS, HUNTERPETS, PETS,
+                  APPEARANCE, MOUNTS, GUILD, QUESTS, HUNTERPETS, PETS, PETSLOTS,
                   PROGRESSION, ACHIEVEMENTS]
 
     def __init__(self, region, realm=None, name=None, data=None, fields=None, connection=None):
@@ -173,8 +174,11 @@ class Character(LazyThing):
         if 'hunterPets' in data:
             self.hunterPets = [HunterPet(hunterPet).id for hunterPet in self._data['hunterPets']]
 
+        if 'petSlots' in data:
+            self.petSlots = [PetSlot(petSlot) for petSlot in self._data['petSlots']]
+
         if 'pets' in data:
-            self.pets = [Pet(pet).id for pet in self._data['pets']['collected']]
+            self.pets = [Pet(pet) for pet in self._data['pets']['collected']]
 
     @property
     def realm(self):
@@ -636,6 +640,18 @@ class HunterPet(Thing):
         self.name = data['creature']
         self.creature = data['name']
         self.id = data['creature']
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return '<%s: %s>' % (self.__class__.__name__, self.name)
+
+class PetSlot(Thing):
+    def __init__(self, data):
+        self._data = data
+
+        self.id = data['battlePetId']
 
     def __str__(self):
         return self.name
