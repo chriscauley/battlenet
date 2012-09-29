@@ -122,9 +122,10 @@ class Character(LazyThing):
     PETSLOTS = 'petSlots'
     PROGRESSION = 'progression'
     ACHIEVEMENTS = 'achievements'
+    PVP = 'pvp'
     ALL_FIELDS = [STATS, TALENTS, ITEMS, REPUTATIONS, TITLES, PROFESSIONS,
                   APPEARANCE, MOUNTS, GUILD, QUESTS, HUNTERPETS, PETS, PETSLOTS,
-                  PROGRESSION, ACHIEVEMENTS]
+                  PROGRESSION, ACHIEVEMENTS, PVP]
 
     def __init__(self, region, realm=None, name=None, data=None, fields=None, connection=None):
         self.region = region
@@ -180,6 +181,9 @@ class Character(LazyThing):
         if 'pets' in data:
             self.pets = [Pet(pet) for pet in self._data['pets']['collected']]
 
+        if 'pvp' in data:
+            self.pvp = data['pvp']
+
     @property
     def realm(self):
         if not hasattr(self, '_realm'):
@@ -223,7 +227,7 @@ class Character(LazyThing):
     @property
     def mounts(self):
         if self._refresh_if_not_present(Character.MOUNTS):
-            self._mounts = [m['spellId'] for m in list(self._data[Character.MOUNTS]['collected'])]
+            self._mounts = [m for m in list(self._data[Character.MOUNTS]['collected'])]
 
         return self._mounts
 
