@@ -548,7 +548,7 @@ class Build(Thing):
         self.trees = []
 
     def __str__(self):
-        return self.name + ' (%d/%d/%d)' % tuple(map(operator.attrgetter('total'), self.trees))
+        return self.name #+ ' (%d/%d/%d)' % tuple(map(operator.attrgetter('total'), self.trees))
 
     def __repr__(self):
         return '<%s: %s>' % (self.__class__.__name__, str(self))
