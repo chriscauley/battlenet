@@ -123,9 +123,10 @@ class Character(LazyThing):
     PROGRESSION = 'progression'
     ACHIEVEMENTS = 'achievements'
     PVP = 'pvp'
+    FEED = 'feed'
     ALL_FIELDS = [STATS, TALENTS, ITEMS, REPUTATIONS, TITLES, PROFESSIONS,
                   APPEARANCE, MOUNTS, GUILD, QUESTS, HUNTERPETS, PETS, PETSLOTS,
-                  PROGRESSION, ACHIEVEMENTS, PVP]
+                  PROGRESSION, ACHIEVEMENTS, PVP,FEED]
 
     def __init__(self, region, realm=None, name=None, data=None, fields=None, connection=None):
         self.region = region
@@ -183,6 +184,9 @@ class Character(LazyThing):
 
         if 'pvp' in data:
             self.pvp = data['pvp']
+
+        if 'feed' in data:
+            self.feed = data['feed']
 
     @property
     def realm(self):
